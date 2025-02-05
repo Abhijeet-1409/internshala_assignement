@@ -16,6 +16,7 @@ class Config(BaseSettings) :
 
     secret_key: str 
     mongodb_uri: str
+    mongodb_name: str
     aws_access_key: str
     aws_secret_key: str
     bucket_name: str
