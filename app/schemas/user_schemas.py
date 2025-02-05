@@ -1,5 +1,7 @@
+import pytz
 from typing import Optional 
-from pydantic import BaseModel, EmailStr, HttpUrl, Field
+from datetime import datetime
+from pydantic import BaseModel, EmailStr, HttpUrl, Field, ConfigDict
 
 
 class UserResponse(BaseModel):
@@ -8,5 +10,11 @@ class UserResponse(BaseModel):
     email: EmailStr = Field(...,title="Email")
     profile_image: Optional[HttpUrl] = Field(default=None,title="Profile Image")  
     about: Optional[str] = Field(default=None,title="About",min_length=20,max_length=100)
+    created_at: datetime = Field(...,title="Created At")
 
-    model_config={"extra":"ignore"}
+    model_config = ConfigDict(
+        extra = "ignore",
+        json_encoders = {
+            datetime: lambda v: v.astimezone(pytz.utc).isoformat() if v else None  # Ensure UTC format for serialization
+        } 
+    )
