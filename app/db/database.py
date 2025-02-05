@@ -1,4 +1,4 @@
-from app.config import settings 
+from app.config.config import settings 
 from motor.motor_asyncio import AsyncIOMotorClient,AsyncIOMotorDatabase,AsyncIOMotorCollection
 
 
