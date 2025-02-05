@@ -22,7 +22,8 @@ class Config(BaseSettings) :
     bucket_name: str
     bucket_folder_name: str
     algorithm:str
-
+    access_token_expire_minutes: int
+    
     model_config = SettingsConfigDict(env_file=env_file_path)
 
 settings = Config()

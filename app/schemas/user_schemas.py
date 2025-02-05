@@ -21,3 +21,4 @@ class UserResponse(BaseModel):
             ObjectId: objectid_to_str,  
             datetime: lambda v: v.astimezone(pytz.utc).isoformat() if v else None  # Ensure UTC format for serialization
         }
+        arbitrary_types_allowed = True
