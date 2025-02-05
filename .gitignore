@@ -3,3 +3,6 @@
 
 # APP_ENV
 app_venv
+
+# PYCACHE
+__pycache__
