@@ -1,4 +1,5 @@
 import re
+from bson import ObjectId
 
 def check_username_validity(username: str) -> str:
     # Check if the username starts with a letter or an underscore
@@ -20,3 +21,8 @@ def check_password_validity(password: str) -> str:
             if not re.search(r'[\W_]', password):  # Contains at least one special character
                 raise ValueError('Password must contain at least one special character.')
         return password
+
+
+def objectid_to_str(id: ObjectId) -> str:
+    # Helper function to convert ObjectId to string for Pydantic model
+    return str(id)
