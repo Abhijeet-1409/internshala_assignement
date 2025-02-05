@@ -13,7 +13,7 @@ env_file_path = os.path.join(parent_directory, '.env')
 
 
 class Config(BaseSettings) :
-
+    
     secret_key: str 
     mongodb_uri: str
     mongodb_name: str
@@ -21,6 +21,7 @@ class Config(BaseSettings) :
     aws_secret_key: str
     bucket_name: str
     bucket_folder_name: str
+    algorithm:str
 
     model_config = SettingsConfigDict(env_file=env_file_path)
 
