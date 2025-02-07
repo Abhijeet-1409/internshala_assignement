@@ -1,26 +1,41 @@
 import re
 from bson import ObjectId
+from email_validator import EmailNotValidError
+from pydantic import EmailStr, validate_email
 
 def check_username_validity(username: str) -> str:
-    # Check if the username starts with a letter or an underscore
-    if username:
-        if not re.match(r'^[A-Za-z_]', username):  # Starts with a letter or underscore
-            raise ValueError('Username must start with a letter or an underscore.')
-        if not re.match(r'^[A-Za-z0-9_]*$', username):  # Contains only letters, numbers, or underscores
-            raise ValueError('Username can only contain letters, numbers, or underscores.')
+ 
+    if not re.match(r'^[A-Za-z_]', username): 
+        raise ValueError('Username must start with a letter or an underscore.')
+    if not re.search(r'\d', username): 
+        raise ValueError('username must contain at least one number.')
+    if not re.search(r'[@_$]', username):  
+        raise ValueError("Username must contain at least one special character ('@', '_', or '$').")
+
     return username
 
 
 def check_password_validity(password: str) -> str:
-        # Check if the password starts with a letter and contains at least one digit and one special character
-        if password:
-            if not re.match(r'^[A-Za-z]', password):  # Starts with a letter
-                raise ValueError('Password must start with a letter.')
-            if not re.search(r'\d', password):  # Contains at least one digit
-                raise ValueError('Password must contain at least one number.')
-            if not re.search(r'[\W_]', password):  # Contains at least one special character
-                raise ValueError('Password must contain at least one special character.')
-        return password
+    
+    if not re.match(r'^[A-Za-z]', password):  
+        raise ValueError('Password must start with a letter.')
+    if not re.search(r'\d', password): 
+        raise ValueError('Password must contain at least one number.')
+    if not re.search(r'[@%$]', password):  
+        raise ValueError("Password must contain at least one special character ('@', '%', or '$').")
+    
+    return password
+
+
+def check_email_validity(email:EmailStr ):
+    try:
+        validate_email(value=email)
+    except EmailNotValidError as email_exe:
+        raise ValueError("Invalid email address. Please enter a valid email.")
+    except Exception as exe:
+        raise exe
+
+    return email
 
 
 def objectid_to_str(id: ObjectId) -> str:

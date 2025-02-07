@@ -1,3 +1,4 @@
+from bson import ObjectId
 import jwt
 from typing import Optional
 from jwt import InvalidTokenError
@@ -49,10 +50,26 @@ async def get_token_data(token: Annotated[str,Depends(oauth2_scheme)]) -> TokenD
         user_id: str = payload.get("user_id")
         exp: datetime = payload.get('exp')
 
-        if user_id is None or username is None:
+        valid_user_id =  ObjectId.is_valid(user_id)
+
+        if user_id is None or username is None or not valid_user_id:
             raise credentials_exception
-    
+        
+        user_id = ObjectId(user_id)
+
+        return TokenData(username=username,user_id=user_id,exp=exp)
+
     except InvalidTokenError :
         raise credentials_exception
     
-    return TokenData(username=username,user_id=user_id,exp=exp)
+
+
+class ValidatedFile:
+    """Represents a validated file with an allowed format and size constraints."""
+
+    def __init__(self, filename: str, content: bytes, content_type: str):
+        self.filename = filename
+        self.content = content
+        self.content_type = content_type
+
+

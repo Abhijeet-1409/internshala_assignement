@@ -23,6 +23,8 @@ class Config(BaseSettings) :
     bucket_folder_name: str
     algorithm:str
     access_token_expire_minutes: int
+    aws_expiration: int
+    aws_bucket_region: str
     
     model_config = SettingsConfigDict(env_file=env_file_path)
 

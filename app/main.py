@@ -1,16 +1,19 @@
 import uvicorn
-from db.database import db
+from app.config.config import settings
+from app.db.database import Database
 from app.routers import auth, users
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, status 
 from fastapi.middleware.cors import CORSMiddleware
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+   
     try :
         # Intialize all resorces
-        await db.init_db()
+        app.state.db = Database()
+
+        await app.state.db.init_db()
 
         yield
 
@@ -21,7 +24,7 @@ async def lifespan(app: FastAPI):
         )
     finally :
         # Releasing all resouces 
-        await db.close()
+        app.state.db.close_db()
 
 
 app = FastAPI(lifespan=lifespan)

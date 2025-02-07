@@ -1,3 +1,4 @@
+from typing import Any
 from app.config.config import settings 
 from motor.motor_asyncio import AsyncIOMotorClient,AsyncIOMotorDatabase,AsyncIOMotorCollection
 
@@ -7,14 +8,11 @@ class Database:
         self.database: AsyncIOMotorDatabase = self.client.get_database(settings.mongodb_name)  # Specify the database name
         self.user_collection: AsyncIOMotorCollection = self.database.get_collection("users")
 
-    async def init_db(self):
-        """Initialize the database and create indexes."""
-        await self.user_collection.create_index("username", unique=True)
-        await self.user_collection.create_index("email", unique=True)
+    async def init_db(self) :
+        await self.user_collection.create_index([("username", 1)], unique=True)
+        await self.user_collection.create_index([("email", 1)], unique=True)
 
-    async def close(self):
-        """Close the MongoDB client."""
-        await self.client.close()
+        return Any
 
-# Create a global instance of the Database class
-db = Database()
+    def close_db(self) :
+        self.client.close()    
