@@ -121,10 +121,6 @@ uvicorn main:app --reload
 | POST   | `/login` | User login & JWT token generation |
 | GET    | `/profile` | Fetch user profile |
 
-## To-Do List
-- [ ] Add email verification via OTP
-- [ ] Implement password reset functionality
-- [ ] Enhance logging with structured logs
 
 ## Contributing
 If you would like to contribute to this project, please fork the repository and submit a pull request.
